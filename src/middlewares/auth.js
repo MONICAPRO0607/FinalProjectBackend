@@ -1,30 +1,26 @@
 const Cliente = require("../api/models/clientes");
 const { verificarLlave } = require("../utils/jwt");
 
-
 const isAuth = async (req, res, next) => {
     try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json("Token no proporcionado o mal formado");
+    }
+    
+    const token = authHeader.replace("Bearer ", "");
+    const { id } = verificarLlave(token);
 
-        console.log("Authorization header:", req.headers.authorization);
-        
-        const token = req.headers.authorization;
+      
+    const cliente = await Cliente.findById(id);
+    if (!cliente) return res.status(404).json("Usuario no encontrado");
 
-          // Validación robusta del token
-            if (!token || !token.startsWith("Bearer ")) {
-            return res.status(401).json("Token no proporcionado o mal formado");
-            };
-
-        const parsedToken = token.replace("Bearer ", "");
-
-        const { id } = verificarLlave(parsedToken);
-        
-        const cliente = await Cliente.findById(id);
-        if (!cliente) {
-        return res.status(404).json("Usuario no encontrado");
-        };
-
-        cliente.password = null;
-        req.user = cliente;
+    req.user = {
+      id: cliente._id,
+      nombre: cliente.nombre,
+      email: cliente.email,
+      rol: cliente.rol
+    };
         next();
         
     } catch (error) {

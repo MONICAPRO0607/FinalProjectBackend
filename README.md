@@ -13,14 +13,17 @@ rotulos-fullstack-back/
 ├── src/
 │ ├── api/
 │ │ ├── controllers/
-│ │ │ ├── clientes.js
+│ │ │ └── clientes.js
 │ │ │ └── pedidos.js
+│ │ │ └── products.js
 │ │ ├── models/
-│ │ │ ├── clientes.js
+│ │ │ └── clientes.js
 │ │ │ └── pedidos.js
+│ │ │ └── products.js
 │ │ └── routes/
-│ │ ├── clientes.js
-│ │ └── pedidos.js
+│ │ │ └── clientes.js
+│ │ │ └── pedidos.js
+│ │ │ └── producst.js
 │ ├── config/
 │ │ └── db.js
 │ ├── middlewares/
@@ -67,11 +70,11 @@ Servidor corriendo en: http://localhost:3000
 
 📦 Pedidos (/api/v1/pedidos)
 
-| Método | Ruta   | Descripción                       | Autenticación  |
-| ------ | ------ | --------------------------------- | -------------- |
-| GET    | `/`    | Obtener todos los pedidos         | ❌              |
-| POST   | `/`    | Crear nuevo pedido                | ✅ Bearer Token |
-| GET    | `/:id` | Obtener pedidos por cliente ID    | ❌              |
+| Método | Ruta   | Descripción  | Autenticación  |
+| ------ | ------ | ---------------------- | -------------- |
+| GET    | `/`    | Obtener todos los pedidos | ❌              |
+| POST   | `/`    | Crear nuevo pedido        | ✅ Bearer Token |
+| GET    | `/:id` | Obtener pedidos por cliente ID | ❌            |
 | DELETE | `/:id` | Eliminar pedido de cliente por ID | ✅ Bearer Token |
 
 ## 🧪 Ejemplo de uso con Insomnia

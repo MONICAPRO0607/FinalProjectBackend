@@ -30,5 +30,5 @@ clienteSchema.pre("save", async function (next) {
 }
 });
 
-const Cliente = mongoose.model("Cliente", clienteSchema, "cliente");
+const Cliente = mongoose.model("Cliente", clienteSchema, "Cliente");
 module.exports = Cliente;
