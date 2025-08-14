@@ -1,4 +1,5 @@
 const Pedido = require('../models/pedidos');
+const Product = require('../models/products');
 
 // Obtener todos los pedidos
 const getPedidos = async (req, res, next) => {
@@ -59,7 +60,7 @@ const getProductsByPedido = async (req, res, next) => {
     if (!pedido) return res.status(404).json("Pedido no encontrado");
 
     // Solo admin o dueño del pedido
-    if (req.user.rol !== "admin" && pedido.clienteId.toString() !== req.user.id) {
+    if (req.user.rol !== "admin" && pedido.clienteId.toString() !== req.user.id.toString()) {
       return res.status(403).json("No tienes permiso para eliminar este pedido");
     }
 
@@ -71,4 +72,4 @@ const getProductsByPedido = async (req, res, next) => {
 };
 
 
-module.exports = {getPedidos, createPedido, getPedidosPorCliente, getProductsByPedido, deletePedido}
+module.exports = {getPedidos, createPedido, getPedidosPorCliente, getProductsByPedido, deletePedido};

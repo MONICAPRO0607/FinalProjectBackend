@@ -1,7 +1,10 @@
-En este proyecto se simula un sistema de gestión de pedidos y clientes en una página de una empresa de rotulación, vinilado y diseño.
+# Sistema de Gestión de Pedidos y Clientes
+
+En este proyecto se simula un sistema de gestión de pedidos y clientes para una empresa de rotulación, vinilado y diseño.  
 Está dividido en dos partes:
-- Backend: donde se utilizan las siguientes tecnologías: Node.js, Express.js, MongoDB + Mongoose, dotenv, bcrypt, cors, nodemon y jsonwebtoken.
-- Frontend: realizado con HTML, CSS y JavaScript Vanilla.
+
+- **Backend:** Node.js, Express.js, MongoDB + Mongoose, dotenv, bcrypt, cors, nodemon y jsonwebtoken.
+- **Frontend:** HTML, CSS y JavaScript Vanilla.
 
 Permite a clientes registrarse, iniciar sesión y gestionar sus pedidos de forma segura mediante autenticación JWT.
 
@@ -13,30 +16,30 @@ rotulos-fullstack-back/
 ├── src/
 │ ├── api/
 │ │ ├── controllers/
-│ │ │ └── clientes.js
-│ │ │ └── pedidos.js
+│ │ │ ├── clientes.js
+│ │ │ ├── pedidos.js
 │ │ │ └── products.js
 │ │ ├── models/
-│ │ │ └── clientes.js
-│ │ │ └── pedidos.js
+│ │ │ ├── clientes.js
+│ │ │ ├── pedidos.js
 │ │ │ └── products.js
 │ │ └── routes/
-│ │ │ └── clientes.js
-│ │ │ └── pedidos.js
-│ │ │ └── producst.js
+│ │ ├── clientes.js
+│ │ ├── pedidos.js
+│ │ └── products.js
 │ ├── config/
 │ │ └── db.js
 │ ├── middlewares/
 │ │ └── auth.js
 │ └── utils/
 │ └── jwt.js
-
-  ├── .env
-  ├── .gitignore
-  ├── index.js
-  ├── package-lock.json
-  ├── package.json
-  └── README.md
+│
+├── .env
+├── .gitignore
+├── index.js
+├── package-lock.json
+├── package.json
+└── README.md
 
 
 ## 🔧 Instalación y configuración
@@ -70,11 +73,11 @@ Servidor corriendo en: http://localhost:3000
 
 📦 Pedidos (/api/v1/pedidos)
 
-| Método | Ruta   | Descripción  | Autenticación  |
-| ------ | ------ | ---------------------- | -------------- |
-| GET    | `/`    | Obtener todos los pedidos | ❌              |
-| POST   | `/`    | Crear nuevo pedido        | ✅ Bearer Token |
-| GET    | `/:id` | Obtener pedidos por cliente ID | ❌            |
+| Método | Ruta   | Descripción                       | Autenticación  |
+| ------ | ------ | --------------------------------- | -------------- |
+| GET    | `/`    | Obtener todos los pedidos         | ❌              |
+| POST   | `/`    | Crear nuevo pedido                | ✅ Bearer Token |
+| GET    | `/:id` | Obtener pedidos por cliente ID    | ❌              |
 | DELETE | `/:id` | Eliminar pedido de cliente por ID | ✅ Bearer Token |
 
 ## 🧪 Ejemplo de uso con Insomnia
