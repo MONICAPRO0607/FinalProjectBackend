@@ -10,13 +10,13 @@ const app = express();
 
 connectDB();
 
-const allowedOrigins = ['https://project10backandfront.netlify.app'];
+const allowedOrigins = ['https://project10-navy.vercel.app', 'http://localhost:5173'];
 
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error('CORS Policy: origen no permitido'), false);
+    if (allowedOrigins.includes(origin)) {
+      return callback(new Error(`CORS Policy: origen ${origin} no permitido`), false);
     }
     return callback(null, true);
   },
