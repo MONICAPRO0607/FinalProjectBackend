@@ -10,7 +10,21 @@ const app = express();
 
 connectDB();
 
-app.use(cors());
+const allowedOrigins = ['https://project10backandfront.netlify.app'];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error('CORS Policy: origen no permitido'), false);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET','POST','PUT','DELETE'],
+  credentials: true
+}));
+
+
 app.use(express.json());
 
 app.use("/api/v1/pedidos", pedidosRoutes);
@@ -21,6 +35,7 @@ app.use((req, res, next) => {
   return res.status(404).json("Route Not Found");
 });
 
-app.listen(3000, () => {
-  console.log("servidor levantado en https://project10-navy.vercel.app")
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor levantado en https://project10-navy.vercel.app`);
 });
