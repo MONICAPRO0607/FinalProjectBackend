@@ -89,7 +89,6 @@ const updateCliente = async (req, res, next) => {
   }
 };
 
-
 module.exports = { getCliente, getClienteById, registerCliente, loginCliente, updateCliente };
 
 

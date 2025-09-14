@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const pedidoSchema = new mongoose.Schema({
   clienteId: {type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Cliente'},
+  productos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Producto' }],
   tipo: { type: String, required: true},
   materiales: { type: String, required: true },
   medidas: { type: String, required: true },

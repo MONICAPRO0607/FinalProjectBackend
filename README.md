@@ -58,7 +58,7 @@ JWT_SECRET=miclaveultrasecreta
 
 4. **Iniciar el servidor**
 npm run dev
-Servidor corriendo en: http://localhost:3000
+Servidor corriendo en: https://project10-navy.vercel.app
 
 ## 🧩 Endpoints disponibles
 
@@ -81,9 +81,9 @@ Servidor corriendo en: http://localhost:3000
 | DELETE | `/:id` | Eliminar pedido de cliente por ID | ✅ Bearer Token |
 
 ## 🧪 Ejemplo de uso con Insomnia
-1. Registro de cliente: POST http://localhost:3000/api/v1/clientes/register
-2. Login y obtención de token: POST http://localhost:3000/api/v1/clientes/login
-3. Crear un nuevo pedido (autenticado): POST http://localhost:3000/api/v1/pedidos
+1. Registro de cliente: POST https://project10-navy.vercel.app/api/v1/clientes/register
+2. Login y obtención de token: POST https://project10-navy.vercel.app/api/v1/clientes/login
+3. Crear un nuevo pedido (autenticado): POST https://project10-navy.vercel.app/api/v1/pedidos
 
 ## 🔐 JWT y autenticación
 El middleware isAuth protege las rutas que requieren autenticación.
