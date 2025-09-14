@@ -55,6 +55,7 @@ npm install
 3. **Configurar variables de entorno**
 DB_URL=mongodb+srv://<usuario>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority
 JWT_SECRET=miclaveultrasecreta
+PORT= 3000
 
 4. **Iniciar el servidor**
 npm run dev
@@ -80,6 +81,15 @@ Servidor corriendo en: https://project10-navy.vercel.app
 | GET    | `/:id` | Obtener pedidos por cliente ID    | ❌              |
 | DELETE | `/:id` | Eliminar pedido de cliente por ID | ✅ Bearer Token |
 
+📦 Productos (/api/v1/products)
+
+| Método | Ruta   | Descripción                       | Autenticación  |
+| ------ | ------ | --------------------------------- | -------------- |
+| GET    | `/`    | Obtener todos los productos       | ❌              |
+| POST   | `/`    | Crear nuevo producto              | ✅ Admin        |
+| GET    | `/:id` | Obtener producto por ID           | ❌              |
+| DELETE | `/:id` | Eliminar producto por ID          | ✅ Admin        |
+
 ## 🧪 Ejemplo de uso con Insomnia
 1. Registro de cliente: POST https://project10-navy.vercel.app/api/v1/clientes/register
 2. Login y obtención de token: POST https://project10-navy.vercel.app/api/v1/clientes/login
@@ -88,6 +98,7 @@ Servidor corriendo en: https://project10-navy.vercel.app
 ## 🔐 JWT y autenticación
 El middleware isAuth protege las rutas que requieren autenticación.
 Hay que asegurarse de enviar el token en el header de cada petición protegida: Authorization: Bearer <token>
+Para rutas de administrador, usar isAdmin.
 
 ## 👩‍💻Autora
 Desarrollado por Mónica Sánchez Carrillo
