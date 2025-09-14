@@ -1,7 +1,6 @@
 const Pedido = require('../models/pedidos');
 const Product = require('../models/products');
 
-// Obtener todos los pedidos
 const getPedidos = async (req, res, next) => {
   try {
     const pedidos = await Pedido.find().populate('clienteId', 'nombre email');
@@ -11,7 +10,6 @@ const getPedidos = async (req, res, next) => {
   }
 };
 
-// Crear pedido
 const createPedido = async (req, res, next) => {
   try {
     const newPedido = new Pedido(req.body);
@@ -22,7 +20,6 @@ const createPedido = async (req, res, next) => {
   }
 };
 
-// Obtener pedidos por cliente
 const getPedidosPorCliente = async (req, res, next) => {
   try {
      if (req.user.rol !== 'admin' && req.user._id.toString() !== req.params.id) {
@@ -35,7 +32,6 @@ const getPedidosPorCliente = async (req, res, next) => {
   };
 };
 
-// Obtener productos por pedido
 const getProductsByPedido = async (req, res, next) => {
   try {
     const pedido = await Pedido.findById(req.params.id).populate('productos');
@@ -45,13 +41,13 @@ const getProductsByPedido = async (req, res, next) => {
     return res.status(400).json("Error al obtener productos del pedido");
   }};
 
-// Eliminar pedido por cliente
+
   const deletePedido = async (req, res, next) => {
    try {
     const pedido = await Pedido.findById(req.params.id);
     if (!pedido) return res.status(404).json("Pedido no encontrado");
 
-    // Solo admin o dueño del pedido
+  
     if (req.user.rol !== "admin" && pedido.clienteId.toString() !== req.user.id) {
       return res.status(403).json("No tienes permiso para eliminar este pedido");
     }

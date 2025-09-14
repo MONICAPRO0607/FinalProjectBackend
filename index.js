@@ -10,11 +10,15 @@ const app = express();
 
 connectDB();
 
-const allowedOrigins = ['https://project10backandfront.netlify.app', 'http://localhost:5173', 'https://project10-navy.vercel.app'];
+const allowedOrigins = [
+  'https://project10backandfront.netlify.app', 
+  'http://localhost:5173', 
+  'https://project10-navy.vercel.app'
+];
 
 app.use(cors({
   origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
+    if (!origin) return callback(null, true); 
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
@@ -26,17 +30,21 @@ app.use(cors({
   credentials: true
 }));
 
+// app.options('*', cors());
+
 app.use(express.json());
 
 app.use("/api/v1/pedidos", pedidosRoutes);
 app.use("/api/v1/clientes", clientesRoutes);
-app.use("/api/v1/products", productsRoutes); 
+app.use("/api/v1/products", productsRoutes);
 
-app.use((req, res, next) => {
-  return res.status(404).json("Route Not Found");
+app.use((req, res) => {
+  res.status(404).json({ message: "Route Not Found" });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor levantado en https://project10-navy.vercel.app`);
+  console.log(`Servidor levantado en puerto ${PORT}`);
 });
+
+module.exports = app;
