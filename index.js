@@ -1,44 +1,30 @@
 require("dotenv").config();
 const express = require('express');
-const { connectDB } = require('./src/config/db');
-const pedidosRoutes = require("./src/api/routes/pedidos");
-const clientesRoutes = require("./src/api/routes/clientes");
-const productsRoutes = require("./src/api/routes/products"); 
 const cors = require('cors');
+const { connectDB } = require('./src/config/db');
+
+const authRoutes = require("./src/api/routes/auth");
+const dedicationRoutes = require("./src/api/routes/dedication");
+const guestRoutes = require("./src/api/routes/guest");
+const ideaRoutes = require("./src/api/routes/idea"); 
+const pictureRoutes = require("./src/api/routes/picture");
 
 const app = express();
 
 connectDB();
 
-const allowedOrigins = [
-  'https://project10backandfront.netlify.app', 
-  'http://localhost:5173', 
-  'https://project10-navy.vercel.app'
-];
-
-app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true); 
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error(`CORS Policy: origen ${origin} no permitido`), false);
-    }
-  },
-  methods: ['GET','POST','PUT','DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
-
-// app.options('*', cors());
-
+app.use(cors());
 app.use(express.json());
 
-app.use("/api/v1/pedidos", pedidosRoutes);
-app.use("/api/v1/clientes", clientesRoutes);
-app.use("/api/v1/products", productsRoutes);
 
-app.use((req, res) => {
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/guest", guestRoutes);
+app.use("/api/v1/dedication", dedicationRoutes);
+app.use("/api/v1/idea", ideaRoutes); 
+app.use("/api/v1/picture", pictureRoutes);
+
+
+app.use((req, res, next) => {
   res.status(404).json({ message: "Route Not Found" });
 });
 

@@ -1,65 +1,54 @@
-# Sistema de Gestión de Pedidos y Clientes
+# App para la boda
 
-En este proyecto se simula un sistema de gestión de pedidos y clientes para una empresa de rotulación, vinilado y diseño.  
+En este proyecto se realiza una aplicación para que una amiga la pueda utilizar antes, durante y después de la boda, facilitando la organización, comunicación con invitados/as y conjunto de recuerdos de todo el proceso.
 Está dividido en dos partes:
 
 - **Backend:** Node.js, Express.js, MongoDB + Mongoose, dotenv, bcrypt, cors, nodemon y jsonwebtoken.
 - **Frontend:** HTML, CSS y JavaScript Vanilla.
 
-Permite a clientes registrarse, iniciar sesión y gestionar sus pedidos de forma segura mediante autenticación JWT.
-
-
 ## 📁 Estructura del proyecto
 
-rotulos-fullstack-back/
+Project13Backend/
 │
 ├── src/
 │ ├── api/
 │ │ ├── controllers/
-│ │ │ ├── clientes.js
-│ │ │ ├── pedidos.js
-│ │ │ └── products.js
+│ │ │  ├── authController.js
+│ │ │  ├── dedicationController.js
+│ │ │  ├── pictureController.js
+│ │ │  ├── ideaController.js
+│ │ │  └── guestController.js
 │ │ ├── models/
-│ │ │ ├── clientes.js
-│ │ │ ├── pedidos.js
-│ │ │ └── products.js
+│ │ │  ├── Novio.js
+│ │ │  ├── Dedication.js
+│ │ │  ├── Picture.js
+│ │ │  ├── Idea.js
+│ │ │  └── Guest.js
 │ │ └── routes/
-│ │ ├── clientes.js
-│ │ ├── pedidos.js
-│ │ └── products.js
+│ │ │ ├── auth.js
+│ │ │ ├── dedication.js
+│ │ │ ├── picture.js
+│ │ │ ├── idea.js
+│ │ │ └── guest.js
 │ ├── config/
-│ │ └── db.js
+│ │ ├── db.js
+│ │ └── guests.csv
 │ ├── middlewares/
-│ │ └── auth.js
+│ │ ├── auth.js
+│ │ └── admin.js
+│ ├── seeds/
+│ │ └── seed.js
 │ └── utils/
-│ └── jwt.js
-│
+│ │ ├── cloudinary.js
+│ │ └── jwt.js
 ├── .env
 ├── .gitignore
 ├── index.js
 ├── package-lock.json
 ├── package.json
-└── README.md
+├── README.md
+└── vercel.json
 
-
-## 🔧 Instalación y configuración
-
-1. **Clonar el repositorio**
-
-git clone https://github.com/tuusuario/rotulos-fullstack-back.git
-cd rotulos-fullstack-back
-
-2. **Instalar dependencias**
-npm install
-
-3. **Configurar variables de entorno**
-DB_URL=mongodb+srv://<usuario>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority
-JWT_SECRET=miclaveultrasecreta
-PORT= 3000
-
-4. **Iniciar el servidor**
-npm run dev
-Servidor corriendo en: https://project10-navy.vercel.app
 
 ## 🧩 Endpoints disponibles
 

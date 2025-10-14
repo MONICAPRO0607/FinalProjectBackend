@@ -1,51 +1,36 @@
-const Cliente = require("../api/models/clientes");
-const { verificarLlave } = require("../utils/jwt");
+const jwt = require("jsonwebtoken");
+const Novio = require("../api/models/Novio");
 
 const isAuth = async (req, res, next) => {
   try {
       console.log("Authorization header:", req.headers.authorization);
 
-      // const token = req.headers.authorization;
-
-    // Validación del token
-    if (!token || !token.startsWith("Bearer ")) {
-      return res.status(401).json("Token no proporcionado o mal formado");
-    }
-
-    // const parsedToken = token.replace("Bearer ", "");
-    // const { id } = verificarLlave(parsedToken);
-
-    // const cliente = await Cliente.findById(id);
-    // if (!cliente) return res.status(404).json("Usuario no encontrado");
-
-    cliente.password = null;
-    req.user = cliente;
-
-    const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json("Token no proporcionado o mal formado");
+      return res.status(401).json({ message: "Token no proporcionado o mal formado" });
     }
-    
-    const token = authHeader.replace("Bearer ", "");
-    const { id } = verificarLlave(token);
 
-      
-    const cliente = await Cliente.findById(id);
-    if (!cliente) return res.status(404).json("Usuario no encontrado");
+    const token = authHeader.split(" ")[1];
 
-    req.user = {
-      id: cliente._id,
-      nombre: cliente.nombre,
-      email: cliente.email,
-      rol: cliente.rol
-    };
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    const novio = await Novio.findById(decoded.id).select("-password");
+    if (!novio) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    req.novio = novio;
     next();
-
   } catch (error) {
-    console.error("Auth error:", error);
-    return res.status(401).json("No estás autorizado");
+    console.error("❌ Error en autenticación:", error.message);
+    return res.status(401).json({ message: "No autorizado o token inválido" });
   }
 };
 
-module.exports = { isAuth };
+const isAdmin = (req, res, next) => {
+  if (req.novio && req.novio.rol === "admin") {
+    return next();
+  }
+  return res.status(403).json({ message: "Acceso solo para administradores" });
+};
+
+module.exports = { isAuth, isAdmin };
