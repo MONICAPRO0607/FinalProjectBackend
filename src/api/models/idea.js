@@ -7,8 +7,9 @@ const ideaSchema = new mongoose.Schema({
     enum: ["Canción", "Actividad", "Juego", "Detalle especial"],
     default: "Idea",
   },
+  message: { type: String, default: "" },
   idea: { type: String, required: true, trim: true },
-  createdAt: { type: Date, default: Date.now },
+  approved: { type: Boolean, default: false } ,
 }, { timestamps: true,
     collection: "Idea"
    });

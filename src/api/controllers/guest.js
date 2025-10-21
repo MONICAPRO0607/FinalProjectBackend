@@ -33,6 +33,15 @@ const addGuest = async (req, res) => {
   }
 };
 
+const updateGuest = async (req, res) => {
+  try {
+    const updated = await Guest.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: "Error al actualizar invitado" });
+  }
+};
+
 const searchGuest = async (req, res) => {
   try {
     const { name } = req.query;
@@ -53,4 +62,4 @@ const searchGuest = async (req, res) => {
   }
 };
 
-module.exports = { getGuests, addGuest, searchGuest };
+module.exports = { getGuests, addGuest, searchGuest, updateGuest };

@@ -2,9 +2,14 @@ const Idea = require("../models/idea");
 
 const createIdea = async (req, res) => {
   try {
-    const idea = new Idea(req.body);
-    await idea.save();
-    res.status(201).json(idea);
+   const newIdea = new Idea({
+   name: req.body.name,
+   message: req.body.message,
+   approved: false,
+  });
+  const saved = await newIdea.save();
+  res.json(saved);
+  res.status(201).json(idea);
   } catch (error) {
     res.status(400).json({ message: "Error al crear la idea", error });
   }
@@ -19,6 +24,16 @@ const getIdeas = async (req, res) => {
   }
 };
 
+const getApprovedIdeas = async (req, res) => {
+  const ideas = await Idea.find({ approved: true });
+  res.json(ideas);
+};
+
+const getAllIdeas = async (req, res) => {
+  const ideas = await Idea.find();
+  res.json(ideas);
+};
+
 const deleteIdea = async (req, res) => {
   try {
     const { id } = req.params;
@@ -29,4 +44,4 @@ const deleteIdea = async (req, res) => {
   }
 };
 
-module.exports = { createIdea, getIdeas, deleteIdea };
+module.exports = { createIdea, getIdeas, getAllIdeas, getApprovedIdeas, deleteIdea };
