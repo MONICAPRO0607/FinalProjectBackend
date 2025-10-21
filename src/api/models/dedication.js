@@ -9,6 +9,6 @@ const dedicationSchema = new mongoose.Schema({
   collection: "dedication"
    });
 
-const dedication = mongoose.model("dedication", dedicationSchema, "dedication");
+const Dedication = mongoose.model("Dedication", dedicationSchema, "dedication");
 
-module.exports = dedication;
+module.exports = Dedication;

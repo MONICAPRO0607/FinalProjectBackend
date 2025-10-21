@@ -18,8 +18,11 @@ const filePath = path.join(__dirname, "../config/guests.csv");
     fs.createReadStream(filePath)
       .pipe(csv())
       .on("data", (row) => {
-        const { name, relation, party } = row;
-        if (name && relation && party) {
+        const name = row.name ? row.name.toString() : "";
+        const relation = row.relation ? row.relation.toString() : "";
+        const party = row.party ? row.party.toString() : "";
+
+        if (name) {
           results.push({
             name,
             nameNormalized: name.toLowerCase().trim().normalize("NFD").replace(/\p{Diacritic}/gu, ""),
@@ -42,6 +45,10 @@ const filePath = path.join(__dirname, "../config/guests.csv");
         await Guest.insertMany(results);
         console.log("🌱 Seed completado con éxito!");
 
+        mongoose.connection.close();
+      })
+      .on("error", (err) => {
+        console.error("❌ Error leyendo CSV:", err);
         mongoose.connection.close();
       });
   } catch (error) {

@@ -13,29 +13,29 @@ Project13Backend/
 ├── src/
 │ ├── api/
 │ │ ├── controllers/
-│ │ │  ├── authController.js
-│ │ │  ├── dedicationController.js
-│ │ │  ├── pictureController.js
-│ │ │  ├── ideaController.js
-│ │ │  └── guestController.js
+│ │ │  ├── admin.js
+│ │ │  ├── dedication.js
+│ │ │  ├── guest.js
+│ │ │  ├── idea.js
+│ │ │  └── picture.js
 │ │ ├── models/
-│ │ │  ├── Novio.js
-│ │ │  ├── Dedication.js
-│ │ │  ├── Picture.js
-│ │ │  ├── Idea.js
-│ │ │  └── Guest.js
+│ │ │  ├── admin.js
+│ │ │  ├── dedication.js
+│ │ │  ├── guest.js
+│ │ │  ├── idea.js
+│ │ │  └── picture.js
 │ │ └── routes/
-│ │ │ ├── auth.js
+│ │ │ ├── admin.js
 │ │ │ ├── dedication.js
-│ │ │ ├── picture.js
+│ │ │ ├── guest.js
 │ │ │ ├── idea.js
-│ │ │ └── guest.js
+│ │ │ └── picture.js
 │ ├── config/
 │ │ ├── db.js
-│ │ └── guests.csv
+│ │ ├── guests.csv
+│ │ └── loadGuests.js
 │ ├── middlewares/
-│ │ ├── auth.js
-│ │ └── admin.js
+│ │ └──auth.js
 │ ├── seeds/
 │ │ └── seed.js
 │ └── utils/

@@ -1,36 +1,34 @@
-const jwt = require("jsonwebtoken");
-const Novio = require("../api/models/Novio");
+const jwt = require('jsonwebtoken')
+const Admin = require('../api/models/admin')
 
 const isAuth = async (req, res, next) => {
   try {
-      console.log("Authorization header:", req.headers.authorization);
+    const authHeader = req.headers.authorization || req.headers.Authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Token no proporcionado o mal formado" });
+    if (!authHeader?.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'Token no proporcionado o mal formado' });
     }
 
-    const token = authHeader.split(" ")[1];
+    const token = authHeader.split(' ')[1];
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const novio = await Novio.findById(decoded.id).select("-password");
-    if (!novio) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
-    }
+    const user = await Admin.findById(decoded.id).select("-password");
+    if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
 
-    req.novio = novio;
-    next();
+    req.user = user;
+    next()
   } catch (error) {
-    console.error("❌ Error en autenticación:", error.message);
-    return res.status(401).json({ message: "No autorizado o token inválido" });
+    console.error('❌ Error en autenticación:', error.message)
+    return res.status(401).json({ message: 'No autorizado o token inválido' })
   }
-};
+}
 
 const isAdmin = (req, res, next) => {
-  if (req.novio && req.novio.rol === "admin") {
-    return next();
+  if (req.user?.role === 'admin') {
+    return next()
   }
-  return res.status(403).json({ message: "Acceso solo para administradores" });
-};
+  return res.status(403).json({ message: 'Acceso solo para administradores' })
+}
 
-module.exports = { isAuth, isAdmin };
+module.exports = { isAuth, isAdmin }

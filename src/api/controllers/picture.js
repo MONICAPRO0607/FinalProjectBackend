@@ -5,7 +5,7 @@ const path = require("path");
 
 const getPictures = async (req, res) => {
   try {
-    const pictures = await picture.find().sort({ createdAt: -1 });
+    const pictures = await Picture.find().sort({ createdAt: -1 });
     res.json(pictures);
   } catch (error) {
     console.error("Error al obtener imágenes:", error);
@@ -43,7 +43,7 @@ const addPicture = async (req, res) => {
 const deletePicture = async (req, res) => {
   try {
     const { id } = req.params;
-    const picture = await picture.findById(id);
+    const picture = await Picture.findById(id);
 
     if (!picture) {
       return res.status(404).json({ message: "Imagen no encontrada" });
