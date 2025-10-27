@@ -5,7 +5,7 @@ const path = require("path");
 
 const getPictures = async (req, res) => {
   try {
-    const pictures = await Picture.find().sort({ createdAt: -1 });
+    const pictures = await Picture.find().sort({ createdAt: -1 }).populate("guest");
     res.json(pictures);
   } catch (error) {
     console.error("Error al obtener imágenes:", error);

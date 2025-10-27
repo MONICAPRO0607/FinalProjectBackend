@@ -17,7 +17,7 @@ const createDedication = async (req, res) => {
 
 const getDedications = async (req, res) => {
   try {
-    const dedications = await Dedication.find().sort({ createdAt: -1 });
+    const dedications = await Dedication.find().sort({ createdAt: -1 }).populate("guest");
     res.json(dedications);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener dedicatorias", error });

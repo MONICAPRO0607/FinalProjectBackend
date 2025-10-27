@@ -17,7 +17,7 @@ const createIdea = async (req, res) => {
 
 const getIdeas = async (req, res) => {
   try {
-    const ideas = await Idea.find().sort({ createdAt: -1 });
+    const ideas = await Idea.find().sort({ createdAt: -1 }).populate("guest");
     res.json(ideas);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener ideas", error });
