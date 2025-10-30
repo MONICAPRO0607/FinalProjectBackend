@@ -6,7 +6,7 @@ const ideaRoutes = require("express").Router();
 ideaRoutes.get("/", getIdeas);
 ideaRoutes.post("/", createIdea);
 ideaRoutes.get("/admin", isAuth, getAllIdeas);
-ideaRoutes.get("/", getApprovedIdeas);
+ideaRoutes.get("/approved", getApprovedIdeas);
 ideaRoutes.delete("/:id", isAuth, deleteIdea);
 
 

@@ -6,6 +6,7 @@ const pictureSchema = new mongoose.Schema(
     section: { type: String, enum: ["antes", "durante", "después"], required: true },
     comment: { type: String },
     uploadedBy: { type: String },
+    guest: { type: mongoose.Schema.Types.ObjectId, ref: "Guest" }
   },
   { timestamps: true,
     collection: "picture"
