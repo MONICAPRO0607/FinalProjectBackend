@@ -10,6 +10,9 @@ const guestSchema = new mongoose.Schema({
   specialNeeds: { type: String, default: "" },
   message: { type: String, default: "" },
   confirmed: { type: Boolean, default: false },
+  dedications: [{ type: mongoose.Schema.Types.ObjectId, ref: "Dedication" }],
+  idea: { type: mongoose.Schema.Types.ObjectId, ref: "Idea" },
+  picture: { type: mongoose.Schema.Types.ObjectId, ref: "Picture" }
 }, 
 
 { timestamps: true,
