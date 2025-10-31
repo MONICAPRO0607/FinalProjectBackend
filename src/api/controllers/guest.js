@@ -2,7 +2,7 @@ const Guest = require("../models/guest");
 
 const getGuests = async (req, res) => {
   try {
-    const guests = await Guest.find().populate("dedications", "idea", "picture");
+    const guests = await Guest.find().populate("dedications").populate ("idea").populate("picture");
     res.json(guests);
   } catch (error) {
     console.error(error);
