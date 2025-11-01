@@ -4,11 +4,12 @@ const createIdea = async (req, res) => {
   try {
    const newIdea = new Idea({
    name: req.body.name,
+   idea: req.body.idea,
+   category: req.body.category,
    message: req.body.message,
    approved: false,
   });
   const saved = await newIdea.save();
-  res.json(saved);
   res.status(201).json(idea);
   } catch (error) {
     res.status(400).json({ message: "Error al crear la idea", error });
