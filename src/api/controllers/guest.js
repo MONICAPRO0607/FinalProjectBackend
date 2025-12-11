@@ -12,17 +12,14 @@ const generateTokenForGuest = async (req, res) => {
     let guest = await Guest.findOne({ name, email });
 
     if (!guest) {
-      const token = crypto.randomBytes(4).toString("hex");
+      const token = crypto.randomBytes(4).toString("hex").toUpperCase();
 
       guest = new Guest({
         name,
         email,
         token,
         nameNormalized: name
-          .toLowerCase()
-          .trim()
-          .normalize("NFD")
-          .replace(/\p{Diacritic}/gu, "")
+          .toLowerCase().trim().normalize("NFD").replace(/\p{Diacritic}/gu, "")
       });
       await guest.save();
       return res.json({ token: guest.token });
@@ -44,7 +41,7 @@ const generateTokenForGuest = async (req, res) => {
 
 const getGuests = async (req, res) => {
   try {
-    const guests = await Guest.find().populate("dedications").populate ("idea").populate("picture");
+    const guests = await Guest.find();
     res.json(guests);
   } catch (error) {
     console.error(error);
