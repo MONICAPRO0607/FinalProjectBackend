@@ -3,7 +3,7 @@ const { getGuests, getGuestByToken, addGuest, searchGuest, updateGuestByToken } 
 const guestRoutes = require("express").Router();
 
 guestRoutes.get("/", getGuests);
-guestRoutes.get("/:token", getGuestByToken);
+guestRoutes.get("/token/:token", getGuestByToken);
 guestRoutes.get("/search", searchGuest);
 guestRoutes.post("/", addGuest);
 guestRoutes.put("/:id", updateGuestByToken);
