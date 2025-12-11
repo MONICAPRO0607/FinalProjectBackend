@@ -2,15 +2,28 @@ const Idea = require("../models/idea");
 
 const createIdea = async (req, res) => {
   try {
-   const newIdea = new Idea({
-   name: req.body.name,
-   idea: req.body.idea,
-   category: req.body.category,
-   message: req.body.message,
-   approved: false,
-  });
+    console.log("BODY RECIBIDO:", req.body);
+    const { name, idea, category, message } = req.body;
+
+    if (!name?.trim() || !idea?.trim()) {
+      return res.status(400).json({ message: "Debes completar nombre e idea" });
+    }
+
+    const validCategories = ["Canción", "Actividad", "Juego", "Detalle especial"];
+    if (!validCategories.includes(category)) {
+      return res.status(400).json({ message: "Categoría inválida" });
+    }
+
+    const newIdea = new Idea({
+      name: name.trim(),
+      idea: idea.trim(),
+      category,
+      message: message?.trim() || "",
+      approved: false,
+    });
+
   const saved = await newIdea.save();
-  res.status(201).json(idea);
+  res.status(201).json(saved);
   } catch (error) {
     res.status(400).json({ message: "Error al crear la idea", error });
   }
@@ -18,7 +31,7 @@ const createIdea = async (req, res) => {
 
 const getIdeas = async (req, res) => {
   try {
-    const ideas = await Idea.find().sort({ createdAt: -1 }).populate("guest");
+    const ideas = await Idea.find().sort({ createdAt: -1 });
     res.json(ideas);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener ideas", error });

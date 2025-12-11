@@ -11,8 +11,8 @@ const ideaSchema = new mongoose.Schema({
   idea: { type: String, required: true, trim: true },
   approved: { type: Boolean, default: false } ,
 }, { timestamps: true,
-    collection: "Idea"
+    collection: "ideas"
    });
 
-const Idea = mongoose.model("Idea", ideaSchema, "idea");
+const Idea = mongoose.model("Idea", ideaSchema);
 module.exports = Idea;
