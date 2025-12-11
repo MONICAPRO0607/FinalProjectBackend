@@ -1,8 +1,9 @@
 const Idea = require("../models/idea");
 
 const createIdea = async (req, res) => {
+ 
   try {
-    console.log("BODY RECIBIDO:", req.body);
+     console.log("📩 BODY RECIBIDO:", req.body);
     const { name, idea, category, message } = req.body;
 
     if (!name?.trim() || !idea?.trim()) {
@@ -25,6 +26,7 @@ const createIdea = async (req, res) => {
   const saved = await newIdea.save();
   res.status(201).json(saved);
   } catch (error) {
+    console.log("🛑 ERROR AL CREAR IDEA:", error);
     res.status(400).json({ message: "Error al crear la idea", error });
   }
 };
