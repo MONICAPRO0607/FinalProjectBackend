@@ -1,4 +1,45 @@
+const crypto = require("crypto");
 const Guest = require("../models/guest");
+
+const generateTokenForGuest = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    if (!name || !email) {
+      return res.status(400).json({ message: "Debes enviar nombre y email" });
+    }
+
+    let guest = await Guest.findOne({ name, email });
+
+    if (!guest) {
+      const token = crypto.randomBytes(6).toString("hex");
+
+      guest = new Guest({
+        name,
+        email,
+        token,
+        nameNormalized: name
+          .toLowerCase()
+          .trim()
+          .normalize("NFD")
+          .replace(/\p{Diacritic}/gu, "")
+      });
+    }
+
+    if (!guest.token) {
+      guest.token = crypto.randomBytes(6).toString("hex");
+    }
+
+    await guest.save();
+
+    res.json({ token: guest.token });
+
+  } catch (error) {
+    console.error("ERROR EN generateTokenForGuest:", error);
+    res.status(500).json({ message: "Error generando token" });
+  }
+};
+
 
 const getGuests = async (req, res) => {
   try {
@@ -11,24 +52,37 @@ const getGuests = async (req, res) => {
 };
 
 const getGuestByToken = async (req, res) => {
-  const { token } = req.params;
-  try {
-    const guest = await Guest.findOne({ token });
-    if (!guest) return res.status(404).json({ message: 'Invitado no encontrado' });
+   try {
+    const { token } = req.params;
+    if (!token) return res.status(400).json({ message: "No se proporcionó un token." });
 
-    res.json({ 
-      name: guest.name, 
-      menu: guest.menu,
-      allergies: guest.allergies,
-      specialNeeds: guest.specialNeeds,
-      message: guest.message,
-      confirmed: guest.confirmed
-    });
+    const guest = await Guest.findOne({ token });
+    if (!guest) return res.status(404).json({ message: "Invitado no encontrado o token inválido." });
+
+    res.json(guest);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error obteniendo invitado' });
+    res.status(500).json({ message: "Error obteniendo invitado por token." });
   }
-};
+}; 
+//   const { token } = req.params;
+//   try {
+//     const guest = await Guest.findOne({ token });
+//     if (!guest) return res.status(404).json({ message: 'Invitado no encontrado' });
+
+//     res.json({ 
+//       name: guest.name, 
+//       menu: guest.menu,
+//       allergies: guest.allergies,
+//       specialNeeds: guest.specialNeeds,
+//       message: guest.message,
+//       confirmed: guest.confirmed
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Error obteniendo invitado' });
+//   }
+// };
 
 const addGuest = async (req, res) => {
   try {
@@ -101,4 +155,4 @@ const searchGuest = async (req, res) => {
   }
 };
 
-module.exports = { getGuests, getGuestByToken, addGuest, searchGuest, updateGuestByToken};
+module.exports = { generateTokenForGuest, getGuests, getGuestByToken, addGuest, searchGuest, updateGuestByToken};

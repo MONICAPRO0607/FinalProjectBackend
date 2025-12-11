@@ -60,6 +60,15 @@ Dedication (/api/v1/dedication)
 | POST   | `/`         | Creación de decicatoria    | ❌            |
 | DELETE | `/:id`      | Eliminar cliente por ID    | ❌            |
 
+Invitado (/api/v1/guest)
+
+| Método | Ruta   | Descripción                       | Autenticación  |
+| ------ | ------ | --------------------------------- | -------------- |
+| GET    | `/`    | Obtener todos los invitados       | ❌             |
+| GETBYTOKEN | `/token/:token` | Obtener por token    | ✅             |
+| POST   | `/`    | Generar token                     | ❌             |
+| POST   | `/Token` | Actualiza datos enviados        | ✅             |
+
 Idea (/api/v1/idea)
 
 | Método | Ruta   | Descripción                       | Autenticación  |
