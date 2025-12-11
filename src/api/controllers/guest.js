@@ -10,6 +10,26 @@ const getGuests = async (req, res) => {
   }
 };
 
+const getGuestByToken = async (req, res) => {
+  const { token } = req.params;
+  try {
+    const guest = await Guest.findOne({ token });
+    if (!guest) return res.status(404).json({ message: 'Invitado no encontrado' });
+
+    res.json({ 
+      name: guest.name, 
+      menu: guest.menu,
+      allergies: guest.allergies,
+      specialNeeds: guest.specialNeeds,
+      message: guest.message,
+      confirmed: guest.confirmed
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error obteniendo invitado' });
+  }
+};
+
 const addGuest = async (req, res) => {
   try {
     const { name, menu, allergies, specialNeeds, message } = req.body;
@@ -33,14 +53,33 @@ const addGuest = async (req, res) => {
   }
 };
 
-const updateGuest = async (req, res) => {
+const updateGuestByToken = async (req, res) => {
+  const { token } = req.params;
+  const { menu, allergies, specialNeeds, message, confirmed } = req.body;
+
   try {
-    const updated = await Guest.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(updated);
+    const guest = await Guest.findOne({ token });
+    if (!guest) return res.status(404).json({ message: 'Invitado no encontrado' });
+    guest.menu = menu ?? guest.menu;
+    guest.allergies = allergies ?? guest.allergies;
+    guest.specialNeeds = specialNeeds ?? guest.specialNeeds;
+    guest.message = message ?? guest.message;
+    guest.confirmed = confirmed ?? guest.confirmed;
+    await guest.save();
+    res.json({ success: true, guest });
   } catch (error) {
-    res.status(500).json({ message: "Error al actualizar invitado" });
+    console.error(error);
+    res.status(500).json({ message: 'Error actualizando invitado' });
   }
 };
+// const updateGuest = async (req, res) => {
+//   try {
+//     const updated = await Guest.findByIdAndUpdate(req.params.id, req.body, { new: true });
+//     res.json(updated);
+//   } catch (error) {
+//     res.status(500).json({ message: "Error al actualizar invitado" });
+//   }
+// };
 
 const searchGuest = async (req, res) => {
   try {
@@ -62,4 +101,4 @@ const searchGuest = async (req, res) => {
   }
 };
 
-module.exports = { getGuests, addGuest, searchGuest, updateGuest };
+module.exports = { getGuests, getGuestByToken, addGuest, searchGuest, updateGuestByToken};

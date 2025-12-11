@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const guestSchema = new mongoose.Schema({
   name: { type: String, required: true },
   nameNormalized: { type: String, required: true, index: true },
+  email: { type: String, required: true },
+  token: { type: String, unique: true, required: true },
   relation: { type: String, default: "" },
   party: { type: String, default: "" },
   menu: { type: String, default: ""  },
