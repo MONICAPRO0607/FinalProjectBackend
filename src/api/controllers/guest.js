@@ -29,7 +29,7 @@ const generateTokenForGuest = async (req, res) => {
     }
 
     if (!guest.token) {
-      guest.token = crypto.randomBytes(4).toString("hex");
+      guest.token = crypto.randomBytes(4).toString("hex").toUpperCase();
       await guest.save();
     }
 
