@@ -12,7 +12,7 @@ const generateTokenForGuest = async (req, res) => {
     let guest = await Guest.findOne({ name, email });
 
     if (!guest) {
-      const token = crypto.randomBytes(6).toString("hex");
+      const token = crypto.randomBytes(4).toString("hex");
 
       guest = new Guest({
         name,
@@ -24,18 +24,19 @@ const generateTokenForGuest = async (req, res) => {
           .normalize("NFD")
           .replace(/\p{Diacritic}/gu, "")
       });
+      await guest.save();
+      return res.json({ token: guest.token });
     }
 
     if (!guest.token) {
-      guest.token = crypto.randomBytes(6).toString("hex");
+      guest.token = crypto.randomBytes(4).toString("hex");
+      await guest.save();
     }
-
-    await guest.save();
 
     res.json({ token: guest.token });
 
   } catch (error) {
-    console.error("ERROR EN generateTokenForGuest:", error);
+    console.error(error);
     res.status(500).json({ message: "Error generando token" });
   }
 };
@@ -65,60 +66,21 @@ const getGuestByToken = async (req, res) => {
     res.status(500).json({ message: "Error obteniendo invitado por token." });
   }
 }; 
-//   const { token } = req.params;
-//   try {
-//     const guest = await Guest.findOne({ token });
-//     if (!guest) return res.status(404).json({ message: 'Invitado no encontrado' });
-
-//     res.json({ 
-//       name: guest.name, 
-//       menu: guest.menu,
-//       allergies: guest.allergies,
-//       specialNeeds: guest.specialNeeds,
-//       message: guest.message,
-//       confirmed: guest.confirmed
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Error obteniendo invitado' });
-//   }
-// };
-
-const addGuest = async (req, res) => {
-  try {
-    const { name, menu, allergies, specialNeeds, message } = req.body;
-
-    const existingGuest = await Guest.findOne({ name });
-    if (!existingGuest) {
-      return res.status(404).json({ message: "Invitado no encontrado" });
-    }
-
-    existingGuest.menu = menu || existingGuest.menu;
-    existingGuest.allergies = allergies || existingGuest.allergies;
-    existingGuest.specialNeeds = specialNeeds || existingGuest.specialNeeds;
-    existingGuest.message = message || existingGuest.message;
-    existingGuest.confirmed = true;
-
-    await existingGuest.save();
-    res.status(200).json(existingGuest);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error al guardar el invitado" });
-  }
-};
 
 const updateGuestByToken = async (req, res) => {
-  const { token } = req.params;
-  const { menu, allergies, specialNeeds, message, confirmed } = req.body;
-
   try {
+    const { token } = req.params;
+    const { menu, allergies, specialNeeds, message, confirmed } = req.body;
+
     const guest = await Guest.findOne({ token });
     if (!guest) return res.status(404).json({ message: 'Invitado no encontrado' });
+
     guest.menu = menu ?? guest.menu;
     guest.allergies = allergies ?? guest.allergies;
     guest.specialNeeds = specialNeeds ?? guest.specialNeeds;
     guest.message = message ?? guest.message;
     guest.confirmed = confirmed ?? guest.confirmed;
+
     await guest.save();
     res.json({ success: true, guest });
   } catch (error) {
@@ -126,14 +88,6 @@ const updateGuestByToken = async (req, res) => {
     res.status(500).json({ message: 'Error actualizando invitado' });
   }
 };
-// const updateGuest = async (req, res) => {
-//   try {
-//     const updated = await Guest.findByIdAndUpdate(req.params.id, req.body, { new: true });
-//     res.json(updated);
-//   } catch (error) {
-//     res.status(500).json({ message: "Error al actualizar invitado" });
-//   }
-// };
 
 const searchGuest = async (req, res) => {
   try {
@@ -155,4 +109,4 @@ const searchGuest = async (req, res) => {
   }
 };
 
-module.exports = { generateTokenForGuest, getGuests, getGuestByToken, addGuest, searchGuest, updateGuestByToken};
+module.exports = { generateTokenForGuest, getGuests, getGuestByToken, updateGuestByToken, searchGuest };
