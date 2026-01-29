@@ -1,14 +1,21 @@
 const Idea = require("../models/idea");
 
 const normalizeCategory = (cat) => {
+  if (!cat) return null;
+
+  const normalized = cat
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
   const map = {
-    "canción": "Canción",
     "cancion": "Canción",
     "actividad": "Actividad",
     "juego": "Juego",
     "detalle especial": "Detalle especial",
   };
-  return map[cat?.toLowerCase()] || null;
+  return map[normalized] || null;
 };
 
 const createIdea = async (req, res) => {
@@ -20,6 +27,10 @@ const createIdea = async (req, res) => {
     }
 
     const normalizedCategory = normalizeCategory(category);
+
+    console.log("CATEGORY RECIBIDA:", category);
+    console.log("NORMALIZED:", normalizedCategory);
+    
     if (!normalizedCategory) {
       return res.status(400).json({ message: "Categoría inválida" });
     }
