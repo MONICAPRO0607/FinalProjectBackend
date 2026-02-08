@@ -6,23 +6,15 @@ const generateTokenForGuest = async (req, res) => {
     const { name, email } = req.body;
 
     if (!name || !email) {
-      return res.status(400).json({ message: "Debes enviar nombre y email" });
-    }
+      return res.status(400).json({ message: "Debes enviar nombre y correo electrónico" });
+    };
 
-    let guest = await Guest.findOne({ name, email });
+    const normalizedName = name.toLowerCase().trim().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
+    let guest = await Guest.findOne({ nameNormalized: normalizedName, email: email.trim() });
 
     if (!guest) {
-      const token = crypto.randomBytes(4).toString("hex").toUpperCase();
-
-      guest = new Guest({
-        name,
-        email,
-        token,
-        nameNormalized: name
-          .toLowerCase().trim().normalize("NFD").replace(/\p{Diacritic}/gu, "")
-      });
-      await guest.save();
-      return res.json({ token: guest.token });
+      return res.status(404).json({ message: "No estás en la lista de invitados, no puedes generar un código" });
     }
 
     if (!guest.token) {
@@ -30,14 +22,12 @@ const generateTokenForGuest = async (req, res) => {
       await guest.save();
     }
 
-    res.json({ token: guest.token });
-
+    res.json({ token: guest.token, name: guest.name, email: guest.email, party: guest.party, relation: guest.relation });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error generando token" });
   }
 };
-
 
 const getGuests = async (req, res) => {
   try {
