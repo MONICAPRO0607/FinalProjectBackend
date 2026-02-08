@@ -1,7 +1,7 @@
 const Idea = require("../models/idea");
 
 const normalizeCategory = (cat) => {
-  if (!cat) return null;
+  if (!cat  || typeof cat !== "string") return null;
 
   const normalized = cat
     .toLowerCase()
@@ -12,14 +12,6 @@ const normalizeCategory = (cat) => {
 
       const allowed = ["cancion", "actividad", "juego", "detalle_especial"];
       return allowed.includes(normalized) ? normalized : null;
-
-  // const map = {
-  //   "cancion": "Canción",
-  //   "actividad": "Actividad",
-  //   "juego": "Juego",
-  //   "detalle especial": "Detalle especial",
-  // };
-  // return map[normalized] || null;
 };
 
 const createIdea = async (req, res) => {
@@ -30,11 +22,11 @@ const createIdea = async (req, res) => {
       return res.status(400).json({ message: "Debes completar nombre e idea" });
     }
 
-    const allowedCategories = ["cancion", "actividad", "juego", "detalle_especial"];
-    const normalizedCategory = category?.toLowerCase().trim().replace(/\s+/g, "_");
-
-    if (!allowedCategories.includes(normalizedCategory)) {
-      return res.status(400).json({ message: `Categoría inválida. Debe ser: ${allowedCategories.join(", ")}` });
+    const normalizedCategory = normalizeCategory(category);
+      if (!normalizedCategory) {
+      return res.status(400).json({ 
+        message: "Categoría inválida. Debe ser: canción, actividad, juego, detalle_especial" 
+      });
     }
 
     const newIdea = new Idea({
@@ -48,14 +40,12 @@ const createIdea = async (req, res) => {
   const saved = await newIdea.save();
   res.status(201).json(saved);
   } catch (error) {
-    // console.error("Error real al guardar idea:", error);
-    // res.status(400).json({ message: "Error al crear la idea", error: error.message });
     console.error("🔥 ERROR REAL:", error);
     res.status(500).json({ 
      message: "Error al crear la idea",
      mongoError: error.message
   })
-};
+};}
 
 const getIdeas = async (req, res) => {
   try {
@@ -90,4 +80,4 @@ const deleteIdea = async (req, res) => {
   }
 };
 
-module.exports = { createIdea, getIdeas, getAllIdeas, getApprovedIdeas, deleteIdea }};
+module.exports = { createIdea, getIdeas, getAllIdeas, getApprovedIdeas, deleteIdea };
