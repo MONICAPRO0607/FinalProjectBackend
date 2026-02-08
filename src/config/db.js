@@ -11,6 +11,8 @@ try {
 	console.log("error al conectar en la base de datos", error);
 	throw error;
 }
+
+	console.log("DB_URL:", process.env.DB_URL);
 };
 
 module.exports = { connectDB };

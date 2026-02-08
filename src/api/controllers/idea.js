@@ -30,12 +30,10 @@ const createIdea = async (req, res) => {
       return res.status(400).json({ message: "Debes completar nombre e idea" });
     }
 
-    const normalizedCategory = normalizeCategory(category);
+    const allowedCategories = ["cancion", "actividad", "juego", "detalle_especial"];
+    const normalizedCategory = category?.toLowerCase().trim().replace(/\s+/g, "_");
 
-    console.log("CATEGORY RECIBIDA:", category);
-    console.log("NORMALIZED:", normalizedCategory);
-
-    if (!normalizedCategory) {
+    if (!allowedCategories.includes(normalizedCategory)) {
       return res.status(400).json({ message: "Categoría inválida" });
     }
 
@@ -55,8 +53,8 @@ const createIdea = async (req, res) => {
     console.error("🔥 ERROR REAL:", error);
     res.status(400).json({ 
     message: error.message,
-    fullError: error
-  }
+    mongoError: error
+  })
 };
 
 const getIdeas = async (req, res) => {
@@ -65,7 +63,7 @@ const getIdeas = async (req, res) => {
     res.status(200).json(ideas);
   } catch (error) {
      console.error("ERROR REAL:", error);
-    res.status(500).json({ message: "Error al obtener ideas", error });
+    res.status(500).json({ message: "Error al obtener ideas", mongoError: error });
   }
 };
 
@@ -92,4 +90,4 @@ const deleteIdea = async (req, res) => {
   }
 };
 
-module.exports = { createIdea, getIdeas, getAllIdeas, getApprovedIdeas, deleteIdea };
+module.exports = { createIdea, getIdeas, getAllIdeas, getApprovedIdeas, deleteIdea }};
