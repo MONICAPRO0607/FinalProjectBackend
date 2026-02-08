@@ -34,7 +34,7 @@ const createIdea = async (req, res) => {
     const normalizedCategory = category?.toLowerCase().trim().replace(/\s+/g, "_");
 
     if (!allowedCategories.includes(normalizedCategory)) {
-      return res.status(400).json({ message: "Categoría inválida" });
+      return res.status(400).json({ message: `Categoría inválida. Debe ser: ${allowedCategories.join(", ")}` });
     }
 
     const newIdea = new Idea({
@@ -51,9 +51,9 @@ const createIdea = async (req, res) => {
     // console.error("Error real al guardar idea:", error);
     // res.status(400).json({ message: "Error al crear la idea", error: error.message });
     console.error("🔥 ERROR REAL:", error);
-    res.status(400).json({ 
-    message: error.message,
-    mongoError: error
+    res.status(500).json({ 
+     message: "Error al crear la idea",
+     mongoError: error.message
   })
 };
 
