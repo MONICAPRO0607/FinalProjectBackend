@@ -5,7 +5,7 @@ const ideaSchema = new mongoose.Schema({
     category: {
       type: String,
       required: true,
-      enum: ["Canción", "Actividad", "Juego", "Detalle especial"],
+      enum: ["cancion", "actividad", "juego", "detalle_especial"],
     },
     idea: { type: String, required: true, trim: true },
     message: { type: String, default: "" },
@@ -13,7 +13,7 @@ const ideaSchema = new mongoose.Schema({
   },
   {
     timestamps: true,
-    collection: "ideas",
+    collection: "idea",
   }
 );
 
